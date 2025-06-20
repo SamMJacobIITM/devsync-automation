@@ -4,6 +4,8 @@ on:
   schedule:
     - cron: '30 9 * * *'  # Daily at 9:30 AM UTC
   workflow_dispatch: # Allows manual testing
+  push:  # Add this line
+    branches: [ main ]
 
 jobs:
   daily-commit:
