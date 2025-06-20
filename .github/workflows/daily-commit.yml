@@ -1,0 +1,34 @@
+name: Daily Automated Commit
+
+on:
+  schedule:
+    - cron: '30 9 * * *'  # Daily at 9:30 AM UTC
+  workflow_dispatch: # Allows manual testing
+
+jobs:
+  daily-commit:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Git with email 23f3002525@ds.study.iitm.ac.in
+        run: |
+          git config --local user.email "23f3002525@ds.study.iitm.ac.in"
+          git config --local user.name "DevSync Automation"
+      
+      - name: Create daily update with email 23f3002525@ds.study.iitm.ac.in
+        run: |
+          echo "Daily update - $(date '+%Y-%m-%d %H:%M:%S UTC')" >> ACTIVITY_LOG.txt
+          echo "Automated by 23f3002525@ds.study.iitm.ac.in" >> ACTIVITY_LOG.txt
+          echo "---" >> ACTIVITY_LOG.txt
+      
+      - name: Commit changes
+        run: |
+          git add ACTIVITY_LOG.txt
+          git commit -m "Daily automated update - $(date '+%Y-%m-%d')" || echo "No changes to commit"
+          git push
